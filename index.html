@@ -58,6 +58,9 @@ h2{font-size:clamp(21px,3vw,27px);line-height:1.15;margin:0}
 .q.done .why{display:block}
 .match{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .mrow{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:9px;font-size:15px;padding:9px 10px;border-radius:10px;border:1px solid transparent;background:#fff}
+.mrow span{flex:1}
+.manswer{display:none;width:100%;margin-top:2px;color:#344054;background:#f3f6fa;border-radius:9px;padding:9px 10px;font-size:14px}
+.mrow.show-answer .manswer{display:block;animation:fadeIn .25s var(--ease)}
 .mrow.ok{background:var(--good);border-color:var(--goodl);animation:answerPop .28s var(--ease)}.mrow.no{background:var(--bad);border-color:var(--badl);animation:answerShake .28s var(--ease)}
 .mrow select{font-size:15px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;min-width:72px;min-height:40px}
 .defs{font-size:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
@@ -338,7 +341,7 @@ function buildMatching(){
   $("mdefs").innerHTML = "<div><b>Column B</b></div>" + defList.map((d,i)=>"<div><b>"+LET[i]+".</b> "+d.text+"</div>").join("");
   const opts = '<option value="">--</option>' + defList.map((d,i)=>'<option value="'+i+'">'+LET[i]+'</option>').join("");
   $("mterms").innerHTML = "<div style='font-family:system-ui;font-weight:700;margin-bottom:8px'>Column A</div>" +
-    matchOrder.map((ti,n)=>'<div class="mrow" id="mr'+n+'"><span><b>'+(n+1)+'.</b> '+MATCH_TERMS[ti][0]+'</span><select id="ms'+n+'" aria-label="Answer for item '+(n+1)+'">'+opts+'</select></div>').join("");
+    matchOrder.map((ti,n)=>'<div class="mrow" id="mr'+n+'"><span><b>'+(n+1)+'.</b> '+MATCH_TERMS[ti][0]+'</span><select id="ms'+n+'" aria-label="Answer for item '+(n+1)+'">'+opts+'</select><div class="manswer" id="ma'+n+'"></div></div>').join("");
   document.querySelectorAll("#mterms select").forEach(x=>x.onchange=updScores);
   $("mnote").textContent = "";
 }
@@ -363,6 +366,11 @@ $("checkMatch").onclick = () => {
     if(v!=="" && defList[+v].owner!==ti){
       const correctIdx = defList.findIndex(d=>d.owner===ti);
       wrongs.push((n+1)+" → "+LET[correctIdx]);
+      $("ma"+n).innerHTML="<b>Correct answer:</b> "+MATCH_TERMS[ti][1];
+      $("mr"+n).classList.add("show-answer");
+    } else if(v!=="" && defList[+v].owner===ti){
+      $("ma"+n).innerHTML="<b>Meaning:</b> "+MATCH_TERMS[ti][1];
+      $("mr"+n).classList.add("show-answer");
     }
   });
   if(wrongs.length) msg += " Correct letters for the red rows: "+wrongs.join(", ")+".";
@@ -446,6 +454,8 @@ function revealAll(){
     $("ms"+n).value=correctIdx;
     row.classList.remove("no");
     row.classList.add("ok");
+    $("ma"+n).innerHTML="<b>Answer:</b> "+MATCH_TERMS[ti][0]+" - "+MATCH_TERMS[ti][1];
+    row.classList.add("show-answer");
   });
   s1=10;
   document.querySelectorAll("#mc .q,#tf .q,#acr .q").forEach(q=>{
