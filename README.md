@@ -8,6 +8,8 @@ The page is a single offline HTML app that works on desktop, Android, iPhone, an
 
 This reviewer helps students practice common midterm topics such as OWASP risks, broken access control, IDOR, XSS, CSRF, OSI and TCP/IP concepts, wireless security, malware behavior, ISO/IEC 27001, PCI DSS, and important cybersecurity acronyms.
 
+Built for DSD, with special credit to CAT.
+
 ## Features
 
 - 100-item practice exam format
