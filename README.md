@@ -29,6 +29,10 @@ Open `index.html` in any modern browser.
 
 For the original named file, open `ITEP_413_Practice_Exam.html`.
 
+## Offline Use
+
+The exam is fully self-contained. There are no CDN links, external scripts, online fonts, or remote images. Download or clone the repository, then open `index.html` directly from the folder even without internet.
+
 ## Files
 
 - `index.html` - main GitHub Pages entry file
