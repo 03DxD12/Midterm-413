@@ -1,0 +1,451 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="A responsive ITEP 413 midterm practice exam for Information Assurance and Security, with scoring, answer review, matching, multiple choice, true/false, and acronyms.">
+<title>ITEP 413 Midterm Practice Exam</title>
+<style>
+:root{--bg:#f5f7fb;--card:#ffffff;--ink:#182230;--muted:#667085;--line:#d9e0ea;--soft:#eef4fb;--accent:#155f99;--accent2:#8a4b16;--good:#e7f7ed;--goodl:#248756;--bad:#fde9e7;--badl:#c83d32;--shadow:0 16px 40px rgba(24,34,48,.08)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#f8fbff 0%,var(--bg) 38%,#eef3f8 100%);color:var(--ink);font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5;-webkit-text-size-adjust:100%}
+.wrap{width:min(1040px,100%);margin:0 auto;padding:clamp(16px,3vw,30px) max(16px,env(safe-area-inset-left)) calc(70px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-right))}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,34px);margin-bottom:16px;box-shadow:var(--shadow)}
+.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+h1{font-size:clamp(28px,5vw,46px);line-height:1.05;margin:0 0 10px;letter-spacing:0}
+.sub{color:var(--muted);font-size:15px;margin:0 0 20px;max-width:760px}
+.bar{position:sticky;top:0;z-index:5;background:rgba(245,247,251,.94);backdrop-filter:blur(12px);padding:12px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(6,minmax(112px,1fr));gap:10px;align-items:center;font-size:14px}
+.bar .score{font-weight:700}
+.bar button,.actions button{font-family:inherit;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:700;cursor:pointer;min-height:42px;transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.bar button:hover,.actions button:hover,.opt:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 18px rgba(21,95,153,.14)}
+.bar button.alt{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+.bar button.warn{background:var(--accent2)}
+.pill{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 10px;min-height:42px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.progress{grid-column:1/-1;width:100%;height:9px;background:#dfe7f1;border-radius:999px;overflow:hidden}
+.progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--accent),var(--goodl));transition:width .2s ease}
+.jumps{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 2px;font-family:system-ui,Arial,sans-serif}
+.jumps a{color:var(--accent);background:var(--soft);border:1px solid #cddded;border-radius:999px;padding:9px 12px;text-decoration:none;font-size:14px;font-weight:700;min-height:40px;display:inline-flex;align-items:center}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:36px 0 8px}
+h2{font-size:clamp(21px,3vw,27px);line-height:1.15;margin:0}
+.count{color:var(--muted);font-size:13px;font-weight:700;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 10px;white-space:nowrap}
+.instr{color:var(--muted);font-size:14px;margin-bottom:14px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,2.5vw,20px);margin-bottom:12px;box-shadow:0 1px 0 rgba(24,34,48,.04)}
+.q .t{font-size:16px;margin-bottom:12px;font-weight:650}
+.q .n{font-weight:800;color:var(--accent);margin-right:6px}
+.opt{display:block;width:100%;text-align:left;font-family:inherit;font-size:15px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 13px;margin-top:8px;cursor:pointer;color:var(--ink);min-height:44px;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt.correct{background:var(--good);border-color:var(--goodl)}
+.opt.wrong{background:var(--bad);border-color:var(--badl)}
+.opt:disabled{cursor:default;color:var(--ink)}
+.tf{display:flex;gap:10px}.tf .opt{width:auto;min-width:110px;text-align:center}
+.why{display:none;margin-top:12px;font-size:14px;color:#344054;background:#f3f6fa;border-radius:10px;padding:10px 12px}
+.q.done .why{display:block}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mrow{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:9px;font-size:15px;padding:9px 10px;border-radius:10px;border:1px solid transparent;background:#fff}
+.mrow.ok{background:var(--good);border-color:var(--goodl)}.mrow.no{background:var(--bad);border-color:var(--badl)}
+.mrow select{font-size:15px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff;min-width:72px;min-height:40px}
+.defs{font-size:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.defs div{margin-bottom:10px}
+.defs b{color:var(--accent)}
+.actions{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+.mnote{font-size:13px;color:var(--muted);margin-top:8px}
+.about,.cheat{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 1px 0 rgba(24,34,48,.04)}
+.about p{color:var(--muted);margin:8px 0 0}
+.cheat summary{cursor:pointer;font-weight:700}
+.cheat table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+.cheat td{border-top:1px solid var(--line);padding:6px 8px;vertical-align:top}
+.cheat td:first-child{font-weight:700;color:var(--accent);white-space:nowrap;width:150px}
+.final{display:none;background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:18px;margin-top:26px}
+.final h3{margin:0 0 8px}
+@media(max-width:900px){.bar{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.wrap{padding-top:12px}.hero{border-radius:16px}.bar{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;font-size:13px}.bar button{width:100%}.match{grid-template-columns:1fr}.mrow{align-items:flex-start;flex-direction:column}.mrow select{width:100%}.tf{display:block}.tf .opt{width:100%}.section-head{align-items:flex-start;flex-direction:column}.count{white-space:normal}.cheat{overflow-x:auto}}
+@media(max-width:430px){.bar{grid-template-columns:1fr}.pill{width:100%}.jumps a{flex:1;justify-content:center}.q{border-radius:12px}.defs{padding:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.opt,.bar button,.actions button,.progress span{transition:none}.bar button:hover,.actions button:hover,.opt:hover:not(:disabled){transform:none}}
+@media print{body{background:#fff}.hero,.q,.about,.cheat,.final{box-shadow:none}.bar,.jumps,.actions,.cheat summary{position:static}.bar button,.jumps{display:none}.q{break-inside:avoid}.why{display:block}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Information Assurance and Security</div>
+    <h1>ITEP 413 Midterm Practice Exam</h1>
+    <div class="sub">Information Assurance and Security. Same format as your exam: Test I Matching (10), Test II Multiple Choice (40), Test III True/False (30). Bonus Test IV: Acronyms (20). Total: 100 items.</div>
+    <div class="jumps">
+      <a href="#test1">Test I</a>
+      <a href="#test2">Test II</a>
+      <a href="#test3">Test III</a>
+      <a href="#test4">Acronyms</a>
+      <a href="#review">Cheat sheet</a>
+    </div>
+  </div>
+
+  <div class="bar">
+    <span class="pill">Test I: <span class="score" id="s1">0/10</span></span>
+    <span class="pill">Test II: <span class="score" id="s2">0/40</span></span>
+    <span class="pill">Test III: <span class="score" id="s3">0/30</span></span>
+    <span class="pill">Test IV: <span class="score" id="s4">0/20</span></span>
+    <span class="pill">Answered: <span class="score" id="answered">0/100</span></span>
+    <span class="pill">Total: <span class="score" id="st">0/100</span></span>
+    <button class="alt" id="reshuffle">Restart and shuffle</button>
+    <button class="warn" id="reveal">Reveal all answers</button>
+    <button class="alt" id="printBtn">Print / Save PDF</button>
+    <div class="progress"><span id="progress"></span></div>
+  </div>
+
+  <div class="about" id="about">
+    <h2>About</h2>
+    <p>This offline practice exam helps review core ITEP 413 midterm topics: OWASP risks, access control, OSI and TCP/IP concepts, wireless security, malware, ISO standards, PCI DSS, and common security acronyms. It works in modern mobile and desktop browsers without installation.</p>
+  </div>
+
+  <div class="section-head">
+    <h2 id="test1">Test I: Matching</h2>
+    <span class="count">Nos. 1 to 10</span>
+  </div>
+  <div class="instr">Match each term in Column A with its meaning in Column B. Write the letter by choosing from the dropdown. Two extra meanings are distractors.</div>
+  <div class="match">
+    <div id="mterms"></div>
+    <div class="defs" id="mdefs"></div>
+  </div>
+  <div class="actions"><button id="checkMatch">Check matching</button></div>
+  <div class="mnote" id="mnote"></div>
+
+  <div class="section-head">
+    <h2 id="test2">Test II: Multiple Choice</h2>
+    <span class="count">Nos. 11 to 50</span>
+  </div>
+  <div class="instr">Choose the best answer. You see the explanation right after you pick.</div>
+  <div id="mc"></div>
+
+  <div class="section-head">
+    <h2 id="test3">Test III: True or False</h2>
+    <span class="count">Nos. 51 to 80</span>
+  </div>
+  <div class="instr">Decide if each statement is true or false.</div>
+  <div id="tf"></div>
+
+  <div class="section-head">
+    <h2 id="test4">Bonus Test IV: Acronyms</h2>
+    <span class="count">Nos. 81 to 100</span>
+  </div>
+  <div class="instr">Choose what each acronym stands for.</div>
+  <div id="acr"></div>
+
+  <details class="cheat" id="review">
+    <summary>Acronym cheat sheet (open to review)</summary>
+    <table id="cheat"></table>
+  </details>
+
+  <div class="final" id="final"></div>
+</div>
+
+<script>
+/* ---------- TEST I: MATCHING ---------- */
+const MATCH_TERMS = [
+ ["IDOR","An app exposes a direct reference to an internal object (like an ID in a URL) without checking authorization"],
+ ["Stored XSS","A malicious script is saved on the server and runs for every visitor who views that content"],
+ ["Session fixation","An attacker sets or predicts a victim's session ID before login, then reuses it after the victim logs in"],
+ ["Anti-CSRF token","A unique, unpredictable value the server checks to confirm a request came from its own page"],
+ ["Content-Security-Policy (CSP)","A header that limits which sources a page may load scripts and other resources from"],
+ ["HSTS","A header that forces the browser to connect only over HTTPS"],
+ ["Worm","Malware that spreads by itself across networks without any user action"],
+ ["Trojan","Malware disguised as legitimate software so the user installs it willingly"],
+ ["ISO/IEC 27001","The certifiable standard for building and running an Information Security Management System (ISMS)"],
+ ["Qualified Security Assessor (QSA)","A person or company that audits and validates PCI DSS compliance"]
+];
+const MATCH_EXTRA = [
+ "Captures and shows live network traffic in detail",
+ "Divides a network into isolated zones so one compromise does not spread everywhere"
+];
+
+/* ---------- TEST II: MULTIPLE CHOICE ---------- */
+// [question, correct, [3 wrong], explanation]
+const MC = [
+ // Web application security (16)
+ ["What does OWASP stand for?","Open Worldwide Application Security Project",["Online Web Application Security Program","Open Web Access and Security Policy","Organized Worldwide Attack Study Project"],"OWASP is a nonprofit that publishes free, community-driven application security resources."],
+ ["Which best describes the OWASP Top 10?","A standard awareness document of the most critical web application security risks",["A complete security framework covering every vulnerability","A law for web developers","A list of approved security tools"],"It is a prioritized starting point, not a complete framework."],
+ ["Which category is #1 in the OWASP Top 10:2025?","A01 Broken Access Control",["A05 Injection","A02 Security Misconfiguration","A04 Cryptographic Failures"],"Broken Access Control is the most common category in real-world testing data."],
+ ["Which risk was folded into Broken Access Control in the 2025 edition?","Server-Side Request Forgery (SSRF)",["SQL Injection","Session fixation","Cross-Site Scripting"],"SSRF no longer has its own category."],
+ ["A student changes /account/1001 to /account/1002 and sees another student's information. What is this?","IDOR (Broken Access Control)",["SQL Injection","Reflected XSS","Session fixation"],"The app used a direct reference without checking authorization."],
+ ["What caused the First American Financial exposure (2019)?","Sequential document numbers in URLs with no authorization check",["A stolen admin password","A SQL injection attack","Malware on employee laptops"],"Changing the number in the URL revealed other customers' records."],
+ ["The Verizon / NICE Systems exposure (2017) involved a public Amazon S3 bucket. Which category is this?","Security Misconfiguration",["Injection","Broken Access Control by IDOR","Authentication Failures"],"Cloud storage was left open to anyone with the URL."],
+ ["TalkTalk was breached in 2015 through what technique?","SQL Injection on legacy web pages",["Stored XSS","Wardriving","Ransomware"],"An automated SQL injection scanning tool found the flaw."],
+ ["The MySpace Samy worm is an example of what?","Stored XSS",["Reflected XSS","SQL Injection","CSRF"],"The script was saved in his profile and copied itself to every viewer's profile."],
+ ["What is the strongest defense that stops SQL injection even if input validation is imperfect?","Parameterized queries",["Longer passwords","A bigger firewall","Hiding error messages only"],"Safe query construction keeps input from changing the query."],
+ ["How should passwords be stored?","Hashed with a slow algorithm like bcrypt or Argon2, plus a unique salt",["In plain text","Encrypted with a fast reversible method","Hashed once with no salt"],"RockYou stored 32 million passwords in plain text."],
+ ["Why does CSRF work?","Browsers automatically attach cookies to requests sent to a site",["The attacker steals the session cookie value","The server has no passwords","HTTPS is turned off"],"The forged request carries the victim's valid session cookie."],
+ ["What is the standard defense against CSRF?","An anti-CSRF token with every state-changing request",["Longer session IDs","Using HTTP instead of HTTPS","Removing cookies from the site"],"An attacker's page cannot know or guess the token."],
+ ["Firesheep (2010) made which attack easy on open Wi-Fi?","Session hijacking (sidejacking)",["SQL injection","Session fixation","Ransomware"],"Sites sent session cookies over plain HTTP after an encrypted login."],
+ ["Which header helps prevent clickjacking by controlling whether a page can be framed?","X-Frame-Options",["HSTS","X-Content-Type-Options","Content-Security-Policy only for scripts"],"Clickjacking overlays your page invisibly inside an iframe."],
+ ["Which two controls could have reduced the British Airways Magecart breach?","Content-Security-Policy and Subresource Integrity",["HSTS and X-Frame-Options","WAF and ping","MFA and WEP"],"CSP blocks the connection to the attacker's domain. SRI blocks a modified script."],
+
+ // OSI / networks (8)
+ ["How many layers does the OSI model have?","Seven",["Four","Five","Nine"],"Physical, Data Link, Network, Transport, Session, Presentation, Application."],
+ ["Which layer handles logical addressing and routing between networks?","Network (Layer 3)",["Data Link (Layer 2)","Transport (Layer 4)","Session (Layer 5)"],"IP and routers work here."],
+ ["Which layer uses MAC addresses and switches?","Data Link (Layer 2)",["Network (Layer 3)","Physical (Layer 1)","Transport (Layer 4)"],"It moves data node to node on the same local segment."],
+ ["At which layer does TLS encryption sit in the lecture's model?","Presentation (Layer 6)",["Physical (Layer 1)","Network (Layer 3)","Session (Layer 5)"],"The Presentation layer formats, translates, and encrypts data."],
+ ["A SYN flood targets which layer?","Transport (Layer 4)",["Physical (Layer 1)","Data Link (Layer 2)","Application (Layer 7)"],"It abuses the TCP three-way handshake."],
+ ["The 2008 Pakistan Telecom / YouTube incident was a failure at which layer?","Network (Layer 3)",["Physical (Layer 1)","Transport (Layer 4)","Application (Layer 7)"],"BGP routing has no built-in check that a network owns an address range."],
+ ["Tapping fiber-optic cables to copy traffic is a failure at which layer?","Physical (Layer 1)",["Data Link (Layer 2)","Network (Layer 3)","Presentation (Layer 6)"],"It happens at the transmission medium, before any encryption matters."],
+ ["Which network type covers a city and often connects several LANs?","MAN",["PAN","LAN","WAN"],"PAN is personal, LAN is a building or campus, WAN is a large or global area."],
+
+ // TCP/IP + wireless (6)
+ ["In TCP/IP, what does IP do?","Addressing and routing packets",["Reliable delivery and reordering","Encrypting data","Blocking attacks"],"TCP handles reliable delivery on top of IP."],
+ ["What is a man-in-the-middle attack?","An attacker secretly intercepts and may alter communication between two parties",["Flooding a server with traffic","Guessing a password","Installing ransomware"],"Both parties think they talk directly to each other."],
+ ["Which tool shows every router hop on the way to a destination?","Traceroute",["Ping","Wireshark","HSTS"],"Ping only checks reachability and response time."],
+ ["What does Wireshark do?","Captures and displays live network traffic in detail",["Tests only whether a host responds","Encrypts Wi-Fi","Blocks malware"],"It lets an admin inspect packet contents."],
+ ["How did attackers first enter the TJX network?","Wardriving and cracking a WEP wireless network from the parking lot",["A phishing email","A SQL injection","A stolen laptop"],"WEP was already known to be crackable in minutes."],
+ ["Which principle would have limited the TJX attackers from reaching payment servers?","Network segmentation",["Using longer passwords","Turning off Wi-Fi at night","Using ping more often"],"Isolated zones stop a compromise from spreading everywhere."],
+
+ // Malware (5)
+ ["Which malware spreads on its own without any user action?","Worm",["Virus","Trojan","Spyware"],"A virus needs an infected file to be run or shared."],
+ ["What does ransomware do?","Encrypts files and demands payment to restore access",["Silently records keystrokes","Attaches to a program to spread","Floods a server with traffic"],"It is now the main way attackers monetize access."],
+ ["What did WannaCry use to spread automatically?","EternalBlue, an exploit for the Windows SMBv1 protocol",["A phishing attachment","A SQL injection","A stolen password list"],"Microsoft had released a patch two months earlier."],
+ ["In the cyber kill chain, which stage is when malware contacts an attacker's server for instructions?","Command and Control (C2)",["Reconnaissance","Delivery","Installation"],"Not every malware needs this stage."],
+ ["Why are offline or immutable backups important against ransomware?","Ransomware cannot encrypt or delete the recovery copy",["They stop the infection from starting","They remove the need for patching","They hide the network"],"Backups protect recovery, not prevention."],
+
+ // ISO / standards (5)
+ ["ISO/IEC 17799 was renumbered to what in 2007?","ISO/IEC 27002",["ISO/IEC 27001","BS 7799","PCI DSS"],"Its content did not fundamentally change."],
+ ["Which standard can an organization be formally certified against for an ISMS?","ISO/IEC 27001",["ISO/IEC 27002","ISO/IEC 17799","PCI DSS twelve requirements"],"27002 is the catalog of controls to select from."],
+ ["What was the root cause of the 2017 Equifax breach?","An unpatched Apache Struts vulnerability",["A phishing email to the CEO","A stolen laptop","Unencrypted Wi-Fi"],"The patch had been available since March 7, 2017."],
+ ["Who must comply with PCI DSS?","Any organization that stores, processes, or transmits cardholder data",["Only banks","Only online stores","Only companies with more than 1,000 employees"],"Compliance is contractually required by the card brands."],
+ ["What is the main lesson of the Heartland breach?","Passing a compliance audit does not guarantee security",["PCI DSS is useless","Encryption is unnecessary","Audits should be skipped"],"Heartland was validated PCI compliant weeks before the breach."]
+];
+
+/* ---------- TEST III: TRUE / FALSE ---------- */
+// [statement, isTrue, explanation]
+const TF = [
+ ["IDOR is a form of Broken Access Control.",true,"It exposes an object reference without checking authorization."],
+ ["The OWASP Top 10 is a complete security framework that covers every possible vulnerability.",false,"It is an awareness document and a starting point only."],
+ ["In OWASP Top 10:2025, SSRF has its own separate category.",false,"It was folded into Broken Access Control."],
+ ["Security misconfiguration is usually a process and configuration management failure, not a coding bug.",true,"Default credentials, open storage, and verbose errors are typical examples."],
+ ["Stored XSS is saved on the server and runs for every visitor who views that content.",true,"Reflected XSS only runs for the person who clicks the crafted link."],
+ ["Input validation alone completely prevents injection and XSS.",false,"Output encoding and parameterized queries are also needed."],
+ ["Output encoding makes special characters like < and > display literally instead of running as code.",true,"This stops an XSS payload from executing when displayed."],
+ ["A Web Application Firewall is a full substitute for secure coding.",false,"A WAF can be bypassed and does not fix the underlying flaw."],
+ ["HTTP is stateless, so a session ID (usually in a cookie) is used to remember a logged-in user.",true,"The server recognizes the user by the session ID."],
+ ["In session fixation, the attacker steals the session ID after login by sniffing traffic.",false,"That describes session hijacking. Fixation sets the ID before login."],
+ ["Marking a cookie HttpOnly stops JavaScript from reading it.",true,"Secure keeps it off plain HTTP. HttpOnly hides it from scripts."],
+ ["A CSRF attack requires the attacker to steal the victim's session cookie value.",false,"The victim's own browser attaches the cookie automatically."],
+ ["In OWASP Top 10:2025, CSRF is mapped under A01 Broken Access Control.",true,"It fails to verify a request was authorized by the user."],
+ ["HSTS forces the browser to connect to a site only over HTTPS.",true,"It prevents downgrade to unencrypted HTTP."],
+ ["Passwords should be stored with fast, reversible encryption.",false,"They should be hashed with a slow algorithm and a unique salt."],
+ ["Every REST API endpoint should enforce authentication and authorization on its own.",true,"An API has no browser session context to rely on by default."],
+ ["The Data Link layer uses MAC addresses.",true,"Switches and ARP work at Layer 2."],
+ ["In TCP/IP, TCP handles addressing and routing while IP handles reliable delivery.",false,"It is the other way around. IP routes and TCP delivers reliably."],
+ ["A SYN flood is a Transport-layer attack.",true,"It exhausts pending connections in the TCP handshake."],
+ ["WEP is a secure Wi-Fi encryption standard recommended today.",false,"WEP is obsolete and can be cracked in minutes. Use WPA2 or WPA3."],
+ ["A LAN usually covers a single building or campus.",true,"A WAN spans a large geographic area."],
+ ["Ping shows every router hop a packet passes through.",false,"That is traceroute. Ping tests basic connectivity and response time."],
+ ["A virus spreads by itself across a network without any user action.",false,"That describes a worm. A virus needs a file to be run or shared."],
+ ["WannaCry spread even though a patch for its exploit had been available for about two months.",true,"Unpatched, unsegmented networks were hit hard, including the NHS."],
+ ["A Trojan disguises itself as legitimate software to trick the user into installing it.",true,"The user installs it voluntarily."],
+ ["Every type of malware must use a command and control (C2) stage.",false,"Self-contained ransomware, for example, may not need it."],
+ ["Regular offline backups help an organization recover from ransomware.",true,"Ransomware cannot reach an offline copy."],
+ ["ISO/IEC 17799 was renumbered to ISO/IEC 27002 in 2007.",true,"Its underlying content did not fundamentally change."],
+ ["ISO/IEC 27002 is the standard an organization is formally certified against.",false,"Certification is against ISO/IEC 27001. 27002 is a catalog of controls."],
+ ["Passing a PCI DSS audit guarantees an organization will not be breached.",false,"An audit is a snapshot in time. Heartland was compliant and still breached."]
+];
+
+
+/* ---------- BONUS TEST IV: ACRONYMS ---------- */
+// [acronym, meaning, [3 wrong], note]
+const ACR = [
+ ["OWASP","Open Worldwide Application Security Project",["Online Web Application Security Protocol","Open Web Access Security Policy","Organized Worldwide Attack Security Project"],"A nonprofit that publishes the OWASP Top 10."],
+ ["IDOR","Insecure Direct Object Reference",["Internal Data Override Rule","Indirect Database Object Request","Insecure Domain Origin Routing"],"A Broken Access Control flaw."],
+ ["XSS","Cross-Site Scripting",["Extended Server Security","Cross-System Scanning","XML Session Security"],"An injection attack that runs a script in another user's browser."],
+ ["CSRF","Cross-Site Request Forgery",["Cross-Server Request Filtering","Client-Side Reference Failure","Cross-Site Resource Firewall"],"Tricks a logged-in browser into sending an unwanted request."],
+ ["CSP","Content-Security-Policy",["Certified Security Protocol","Cookie Session Protection","Client Security Permission"],"Restricts which sources a page can load resources from."],
+ ["HSTS","HTTP Strict Transport Security",["Hidden Session Token Storage","Hardened Secure Transfer System","HTTP Session Transfer Standard"],"Forces browsers to use HTTPS only."],
+ ["SRI","Subresource Integrity",["Secure Request Interface","Session Recovery Index","Server Resource Isolation"],"Lets a page check a hash of an external script before running it."],
+ ["WAF","Web Application Firewall",["Wireless Access Filter","Web Authentication Framework","Wide Area Firewall"],"Filters incoming HTTP traffic for known attack patterns."],
+ ["MFA","Multi-Factor Authentication",["Managed File Access","Master Firewall Administration","Multiple Framework Architecture"],"Requires two or more independent proofs of identity."],
+ ["OSI","Open Systems Interconnection",["Operating System Interface","Open Secure Internet","Online Systems Integration"],"The seven-layer reference model."],
+ ["BGP","Border Gateway Protocol",["Basic Gateway Program","Broadband General Protocol","Backbone Growth Policy"],"Routing protocol used between large networks on the internet."],
+ ["TCP","Transmission Control Protocol",["Transfer Connection Program","Trusted Communication Policy","Transport Control Process"],"Provides reliable, ordered delivery on top of IP."],
+ ["WEP","Wired Equivalent Privacy",["Wireless Encryption Protocol","Web Encryption Policy","Wired Encrypted Packet"],"Obsolete Wi-Fi encryption that can be cracked in minutes."],
+ ["MAN","Metropolitan Area Network",["Main Area Network","Multi-Access Node","Managed Access Network"],"A network covering a city."],
+ ["C2","Command and Control",["Central Control","Code and Configuration","Client to Client"],"The kill-chain stage where malware contacts an attacker's server."],
+ ["EDR","Endpoint Detection and Response",["Encrypted Data Recovery","Enterprise Domain Routing","External Defense Rule"],"Monitors for malicious behavior instead of only known signatures."],
+ ["ISMS","Information Security Management System",["Internet Safety Monitoring Service","Integrated Security Message Standard","Information System Maintenance Schedule"],"The ongoing management system ISO/IEC 27001 certifies."],
+ ["PCI DSS","Payment Card Industry Data Security Standard",["Personal Card Information Data Safety","Payment Control and Integrity Data Standard","Public Card Industry Digital Security"],"Mandatory standard for anyone handling cardholder data."],
+ ["QSA","Qualified Security Assessor",["Quality Security Audit","Quick Security Analysis","Qualified System Administrator"],"Audits and validates PCI DSS compliance."],
+ ["CDE","Cardholder Data Environment",["Central Data Encryption","Certified Defense Engine","Customer Data Exchange"],"The people, processes, and systems that handle cardholder data."]
+];
+
+/* ---------- ENGINE ---------- */
+const $ = id => document.getElementById(id);
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const LET = "ABCDEFGHIJKL";
+let s1=0,s2=0,s3=0,s4=0;
+let matchOrder=[], defList=[];
+
+function updScores(){
+  $("s1").textContent=s1+"/10"; $("s2").textContent=s2+"/40"; $("s3").textContent=s3+"/30"; $("s4").textContent=s4+"/20";
+  const t=s1+s2+s3+s4; $("st").textContent=t+"/100";
+  const answered = document.querySelectorAll("#mc .q.done").length +
+    document.querySelectorAll("#tf .q.done").length +
+    document.querySelectorAll("#acr .q.done").length +
+    Array.from(document.querySelectorAll("#mterms select")).filter(x=>x.value!=="").length;
+  $("answered").textContent=answered+"/100";
+  $("progress").style.width=answered+"%";
+}
+
+function buildMatching(){
+  matchOrder = shuf(MATCH_TERMS.map((_,i)=>i));
+  // definitions: 10 correct + 2 distractors, shuffled
+  defList = shuf([...MATCH_TERMS.map((t,i)=>({text:t[1],owner:i})), ...MATCH_EXTRA.map(t=>({text:t,owner:-1}))]);
+  $("mdefs").innerHTML = "<div><b>Column B</b></div>" + defList.map((d,i)=>"<div><b>"+LET[i]+".</b> "+d.text+"</div>").join("");
+  const opts = '<option value="">--</option>' + defList.map((d,i)=>'<option value="'+i+'">'+LET[i]+'</option>').join("");
+  $("mterms").innerHTML = "<div style='font-family:system-ui;font-weight:700;margin-bottom:8px'>Column A</div>" +
+    matchOrder.map((ti,n)=>'<div class="mrow" id="mr'+n+'"><span><b>'+(n+1)+'.</b> '+MATCH_TERMS[ti][0]+'</span><select id="ms'+n+'" aria-label="Answer for item '+(n+1)+'">'+opts+'</select></div>').join("");
+  document.querySelectorAll("#mterms select").forEach(x=>x.onchange=updScores);
+  $("mnote").textContent = "";
+}
+$("checkMatch").onclick = () => {
+  let score=0, missing=0;
+  matchOrder.forEach((ti,n)=>{
+    const v=$("ms"+n).value, row=$("mr"+n);
+    row.classList.remove("ok","no");
+    if(v===""){missing++; return;}
+    const chosen = defList[+v];
+    if(chosen.owner===ti){score++; row.classList.add("ok");} else {
+      row.classList.add("no");
+    }
+  });
+  s1=score; updScores();
+  let msg = "You got "+score+" of 10.";
+  if(missing) msg += " "+missing+" item(s) still blank.";
+  // show correct letters for wrong items
+  const wrongs=[];
+  matchOrder.forEach((ti,n)=>{
+    const v=$("ms"+n).value;
+    if(v!=="" && defList[+v].owner!==ti){
+      const correctIdx = defList.findIndex(d=>d.owner===ti);
+      wrongs.push((n+1)+" → "+LET[correctIdx]);
+    }
+  });
+  if(wrongs.length) msg += " Correct letters for the red rows: "+wrongs.join(", ")+".";
+  $("mnote").textContent = msg; finalCheck();
+};
+
+function buildMC(){
+  const box=$("mc"); box.innerHTML="";
+  MC.forEach((item,i)=>{
+    const [q,c,w,why]=item;
+    const div=document.createElement("div"); div.className="q";
+    div.innerHTML='<div class="t"><span class="n">'+(11+i)+'.</span>'+q+'</div>';
+    shuf([c,...w]).forEach(text=>{
+      const b=document.createElement("button"); b.className="opt"; b.textContent=text;
+      b.dataset.correct = text===c ? "1" : "0";
+      b.onclick=()=>{
+        div.querySelectorAll(".opt").forEach(o=>{o.disabled=true; if(o.textContent===c)o.classList.add("correct");});
+        if(text===c){s2++;} else {b.classList.add("wrong");}
+        div.classList.add("done"); updScores(); finalCheck();
+      };
+      div.appendChild(b);
+    });
+    const e=document.createElement("div"); e.className="why"; e.textContent=why; div.appendChild(e);
+    box.appendChild(div);
+  });
+}
+
+function buildTF(){
+  const box=$("tf"); box.innerHTML="";
+  TF.forEach((item,i)=>{
+    const [s,ans,why]=item;
+    const div=document.createElement("div"); div.className="q";
+    div.innerHTML='<div class="t"><span class="n">'+(51+i)+'.</span>'+s+'</div>';
+    const row=document.createElement("div"); row.className="tf";
+    [["True",true],["False",false]].forEach(([label,val])=>{
+      const b=document.createElement("button"); b.className="opt"; b.textContent=label;
+      b.dataset.correct = val===ans ? "1" : "0";
+      b.onclick=()=>{
+        row.querySelectorAll(".opt").forEach(o=>{
+          o.disabled=true;
+          if((o.textContent==="True")===ans) o.classList.add("correct");
+        });
+        if(val===ans){s3++;} else {b.classList.add("wrong");}
+        div.classList.add("done"); updScores(); finalCheck();
+      };
+      row.appendChild(b);
+    });
+    div.appendChild(row);
+    const e=document.createElement("div"); e.className="why"; e.textContent=why; div.appendChild(e);
+    box.appendChild(div);
+  });
+}
+
+function buildACR(){
+  const box=$("acr"); box.innerHTML="";
+  ACR.forEach((item,i)=>{
+    const [a,c,w,why]=item;
+    const div=document.createElement("div"); div.className="q";
+    div.innerHTML='<div class="t"><span class="n">'+(81+i)+'.</span>What does <b>'+a+'</b> stand for?</div>';
+    shuf([c,...w]).forEach(text=>{
+      const b=document.createElement("button"); b.className="opt"; b.textContent=text;
+      b.dataset.correct = text===c ? "1" : "0";
+      b.onclick=()=>{
+        div.querySelectorAll(".opt").forEach(o=>{o.disabled=true; if(o.textContent===c)o.classList.add("correct");});
+        if(text===c){s4++;} else {b.classList.add("wrong");}
+        div.classList.add("done"); updScores(); finalCheck();
+      };
+      div.appendChild(b);
+    });
+    const e=document.createElement("div"); e.className="why"; e.textContent=why; div.appendChild(e);
+    box.appendChild(div);
+  });
+  $("cheat").innerHTML=ACR.map(x=>"<tr><td>"+x[0]+"</td><td>"+x[1]+"</td></tr>").join("");
+}
+
+function revealAll(){
+  if(!confirm("Reveal all answers? This will end the current attempt, but you can restart and shuffle anytime.")) return;
+  matchOrder.forEach((ti,n)=>{
+    const row=$("mr"+n);
+    const correctIdx = defList.findIndex(d=>d.owner===ti);
+    $("ms"+n).value=correctIdx;
+    row.classList.remove("no");
+    row.classList.add("ok");
+  });
+  s1=10;
+  document.querySelectorAll("#mc .q,#tf .q,#acr .q").forEach(q=>{
+    q.classList.add("done");
+    q.querySelectorAll(".opt").forEach(o=>{
+      o.disabled=true;
+      if(o.dataset.correct==="1") o.classList.add("correct");
+    });
+  });
+  $("mnote").textContent="All matching answers are shown.";
+  s2=40; s3=30; s4=20;
+  updScores();
+  const f=$("final"); f.style.display="block";
+  f.innerHTML="<h3>Answer key revealed</h3>All correct answers are highlighted. Use Restart and shuffle for a fresh scored attempt.";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function finalCheck(){
+  const doneMC=document.querySelectorAll("#mc .q.done").length;
+  const doneTF=document.querySelectorAll("#tf .q.done").length;
+  const doneACR=document.querySelectorAll("#acr .q.done").length;
+  if(doneMC===MC.length && doneTF===TF.length && doneACR===ACR.length){
+    const t=s1+s2+s3+s4, pct=Math.round(t/100*100);
+    const f=$("final"); f.style.display="block";
+    f.innerHTML="<h3>Your score: "+t+" / 100 ("+pct+"%)</h3>Matching "+s1+"/10, Multiple Choice "+s2+"/40, True/False "+s3+"/30, Acronyms "+s4+"/20."+
+      (s1===0?" Remember to press \"Check matching\" to score Test I.":"");
+  }
+}
+
+function start(){
+  s1=s2=s3=s4=0; $("final").style.display="none";
+  buildMatching(); buildMC(); buildTF(); buildACR(); updScores();
+  window.scrollTo({top:0});
+}
+$("reshuffle").onclick=start;
+$("reveal").onclick=revealAll;
+$("printBtn").onclick=()=>window.print();
+start();
+</script>
+</body>
+</html>
+
